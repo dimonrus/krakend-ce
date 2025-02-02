@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "name": "API GATEWAY",
+  "port": 8080,
+  "cache_ttl": "3600s",
+  "timeout": "120s",
+  "plugin": {
+    "pattern": ".so",
+    "folder": "plugins"
+  },
+  "extra_config": {
+    "telemetry/logging": {
+      "level":  "DEBUG",
+      "prefix": "[KRAKEND]",
+      "syslog": false,
+      "stdout": true
+    },
+    "telemetry/metrics": {
+      "collection_time": "60s",
+      "proxy_disabled": false,
+      "router_disabled": false,
+      "backend_disabled": false,
+      "endpoint_disabled": false,
+      "listen_address": ":8090"
+    },
+    "security/cors": {
+      "allow_origins": [ "http://localhost:3000" ],
+      "allow_methods": [ "GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS" ],
+      "allow_headers": [ "Origin", "Accept", "Content-Type" ,"Authorization" ],
+      "allow_credentials": true,
+      "expose_headers": [ "Content-Length" ],
+      "max_age": "12h"
+    }
+  },
+  "endpoints": [ {{ $iterator := 0 }}
+    {{ range $idx, $list := . }}{{ range $idy, $endpoint := $list.items }}
+    {{ if $iterator}},{{ end }}{{ marshal $endpoint }}{{ $iterator = add1 $iterator }}
+    {{ end }}{{ end }}
+  ]
+}

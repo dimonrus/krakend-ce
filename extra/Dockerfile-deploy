@@ -1,0 +1,28 @@
+ARG ALPINE_VERSION=3.21
+FROM alpine:${ALPINE_VERSION}
+
+LABEL maintainer="community@krakend.io"
+
+RUN apk upgrade --no-cache --no-interactive && apk add --no-cache libc6-compat ca-certificates tzdata make && \
+    adduser -u 1000 -S -D -H krakend
+
+COPY --chown=krakend extra/bin/krakend /krakend/extra/bin/krakend
+COPY --chown=krakend extra/bin/plugins/ /krakend/extra/bin/plugins/
+COPY --chown=krakend extra/config/krakend.tmpl /krakend/extra/config/krakend.tmpl
+COPY --chown=krakend extra/config/service/ /krakend/extra/config/service/
+COPY --chown=krakend extra/env/.vars /krakend/extra/env/.vars
+COPY --chown=krakend extra/Makefile /krakend/extra/Makefile
+COPY --chown=krakend Makefile /krakend/Makefile
+
+WORKDIR /krakend/extra
+
+RUN make proxy && chmod 0777 ./bin/krakend.json && chown krakend ./bin/krakend.json
+
+USER 1000
+
+WORKDIR /krakend/extra/bin
+
+ENTRYPOINT [ "./krakend" ]
+CMD [ "run", "-c", "./krakend.json" ]
+
+EXPOSE 8000 8090
