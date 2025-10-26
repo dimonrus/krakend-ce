@@ -5,16 +5,17 @@ package main
 import (
 	"context"
 	"embed"
-	"github.com/krakendio/krakend-ce/v2/extra"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
-	krakend "github.com/krakendio/krakend-ce/v2"
-	cmd "github.com/krakendio/krakend-cobra/v2"
-	flexibleconfig "github.com/krakendio/krakend-flexibleconfig/v2"
-	viper "github.com/krakendio/krakend-viper/v2"
+	"github.com/krakend/krakend-ce/v2/extra"
+
+	krakend "github.com/krakend/krakend-ce/v2"
+	cmd "github.com/krakend/krakend-cobra/v2"
+	flexibleconfig "github.com/krakend/krakend-flexibleconfig/v2"
+	viper "github.com/krakend/krakend-viper/v2"
 	"github.com/luraproject/lura/v2/config"
 )
 
