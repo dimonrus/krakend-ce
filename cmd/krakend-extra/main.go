@@ -15,7 +15,7 @@ import (
 	krakend "github.com/krakend/krakend-ce/v2"
 	cmd "github.com/krakend/krakend-cobra/v2"
 	flexibleconfig "github.com/krakend/krakend-flexibleconfig/v2"
-	viper "github.com/krakend/krakend-viper/v2"
+	koanf "github.com/krakend/krakend-koanf"
 	"github.com/luraproject/lura/v2/config"
 )
 
@@ -52,7 +52,7 @@ func main() {
 	}
 
 	var cfg config.Parser
-	cfg = viper.New()
+	cfg = koanf.New()
 	if os.Getenv(fcEnable) != "" {
 		cfg = flexibleconfig.NewTemplateParser(flexibleconfig.Config{
 			Parser:    cfg,
